@@ -1,7 +1,7 @@
 package rules
 
 type UpdateRule struct {
-	Suffixes         []string
+	Exts             []string
 	Pattern          string
 	GetMatchReplacer func(match []string) *string
 }

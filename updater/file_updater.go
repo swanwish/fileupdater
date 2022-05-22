@@ -15,10 +15,10 @@ import (
 )
 
 type fileUpdater struct {
-	baseDir       string
-	fileSuffixes  []string
-	updateReules  []rules.UpdateRule
-	suffixRuleMap map[string][]rules.UpdateRule
+	baseDir      string
+	fileExts     []string
+	updateReules []rules.UpdateRule
+	extRuleMap   map[string][]rules.UpdateRule
 }
 
 func NewFileUpdater(baseDir string) *fileUpdater {
@@ -28,22 +28,22 @@ func NewFileUpdater(baseDir string) *fileUpdater {
 	}
 
 	return &fileUpdater{
-		baseDir:       baseDir,
-		fileSuffixes:  make([]string, 0),
-		updateReules:  make([]rules.UpdateRule, 0),
-		suffixRuleMap: make(map[string][]rules.UpdateRule),
+		baseDir:      baseDir,
+		fileExts:     make([]string, 0),
+		updateReules: make([]rules.UpdateRule, 0),
+		extRuleMap:   make(map[string][]rules.UpdateRule),
 	}
 }
 
 func (updater *fileUpdater) RegisterUpdateRule(updateRule rules.UpdateRule) {
-	for _, suffix := range updateRule.Suffixes {
-		updateRules, exists := updater.suffixRuleMap[suffix]
+	for _, ext := range updateRule.Exts {
+		updateRules, exists := updater.extRuleMap[ext]
 		if !exists {
 			updateRules = make([]rules.UpdateRule, 0)
 		}
 		updateRules = append(updateRules, updateRule)
-		updater.suffixRuleMap[suffix] = updateRules
-		updater.addFileSuffix(suffix)
+		updater.extRuleMap[ext] = updateRules
+		updater.addFileExt(ext)
 	}
 }
 
@@ -56,7 +56,7 @@ func (updater fileUpdater) UpdateFiles() error {
 	files := updater.listFiles(updater.baseDir)
 	for _, file := range files {
 		ext := path.Ext(file)
-		if updateRules, exists := updater.suffixRuleMap[ext]; exists {
+		if updateRules, exists := updater.extRuleMap[ext]; exists {
 			for _, updateRule := range updateRules {
 				if err := updater.updateFile(file, updateRule); err != nil {
 					logs.Errorf("Failed to update file %s, the error is %#v", file, err)
@@ -67,13 +67,13 @@ func (updater fileUpdater) UpdateFiles() error {
 	return nil
 }
 
-func (updater *fileUpdater) addFileSuffix(suffix string) {
-	for _, fileSuffix := range updater.fileSuffixes {
-		if fileSuffix == suffix {
+func (updater *fileUpdater) addFileExt(ext string) {
+	for _, fileExt := range updater.fileExts {
+		if fileExt == ext {
 			return
 		}
 	}
-	updater.fileSuffixes = append(updater.fileSuffixes, suffix)
+	updater.fileExts = append(updater.fileExts, ext)
 }
 
 func (updater fileUpdater) listFiles(searchDir string) []string {
@@ -95,8 +95,9 @@ func (updater fileUpdater) listFiles(searchDir string) []string {
 			}
 			files = append(files, subFiles...)
 		} else {
-			for _, suffix := range updater.fileSuffixes {
-				if strings.HasSuffix(itemName, suffix) {
+			fileExt := path.Ext(itemName)
+			for _, ext := range updater.fileExts {
+				if fileExt == ext {
 					files = append(files, filepath.Join(searchDir, itemName))
 				}
 			}
