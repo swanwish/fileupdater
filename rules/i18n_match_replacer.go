@@ -35,7 +35,7 @@ func (r i18nMatchReplacer) GetKotlinMatchReplacer(match []string) *string {
 
 func (r i18nMatchReplacer) GetObjcMatchReplacer(match []string) *string {
 	if len(match) == 3 {
-		value := fmt.Sprintf("StringValues.%s", match[1])
+		value := fmt.Sprintf("StringValues.shared.%s", match[1])
 		return &value
 	}
 	return nil
