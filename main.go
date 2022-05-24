@@ -4,9 +4,9 @@ import (
 	"flag"
 	"runtime"
 
-	"github.com/swanwish/fileupdaterdemo/rules"
-	"github.com/swanwish/fileupdaterdemo/settings"
-	"github.com/swanwish/fileupdaterdemo/updater"
+	"github.com/swanwish/fileupdater/rules"
+	"github.com/swanwish/fileupdater/settings"
+	"github.com/swanwish/fileupdater/updater"
 	"github.com/swanwish/go-common/logs"
 )
 

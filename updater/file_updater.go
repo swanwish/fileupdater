@@ -8,8 +8,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/swanwish/fileupdaterdemo/common"
-	"github.com/swanwish/fileupdaterdemo/rules"
+	"github.com/swanwish/fileupdater/common"
+	"github.com/swanwish/fileupdater/rules"
 	"github.com/swanwish/go-common/logs"
 	"github.com/swanwish/go-common/utils"
 )

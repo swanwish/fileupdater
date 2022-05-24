@@ -1,4 +1,4 @@
-module github.com/swanwish/fileupdaterdemo
+module github.com/swanwish/fileupdater
 
 go 1.18
 

@@ -1,7 +1,7 @@
 package rules
 
 import (
-	"github.com/swanwish/fileupdaterdemo/common"
+	"github.com/swanwish/fileupdater/common"
 )
 
 var matchReplacer = i18nMatchReplacer{}
